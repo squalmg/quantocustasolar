@@ -122,5 +122,6 @@ try {
         'whatsapp_url' => whatsapp_link(defined('DEFAULT_WHATSAPP_E164') ? DEFAULT_WHATSAPP_E164 : $whatsappE164, $message),
     ]);
 } catch (Throwable $e) {
-    json_response(['ok' => false, 'message' => 'Erro ao processar sua simulação. Confira a configuração do banco de dados.'], 500);
+    error_log('[QCS leads.php] ' . $e->getMessage());
+    json_response(['ok' => false, 'message' => 'Erro ao processar sua simulação. Confira a configuração do banco de dados e o arquivo /api/health.php.'], 500);
 }
