@@ -1,26 +1,33 @@
 <?php
-require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../includes/security.php';
+function qcs_api_json_response(array $payload, int $status = 200): void {
+    http_response_code($status);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    qcs_api_json_response(array('ok' => false, 'message' => 'Método não permitido.'), 405);
+}
 
 try {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        json_response(['ok' => false, 'message' => 'Método não permitido.'], 405);
-    }
+    require_once __DIR__ . '/../includes/db.php';
+    require_once __DIR__ . '/../includes/security.php';
 
     $pdo = db();
     if (!rate_limit($pdo, 'lead_submit', 10, 10)) {
-        json_response(['ok' => false, 'message' => 'Muitas tentativas. Aguarde alguns minutos e tente novamente.'], 429);
+        qcs_api_json_response(array('ok' => false, 'message' => 'Muitas tentativas. Aguarde alguns minutos e tente novamente.'), 429);
     }
 
     $data = read_json_body();
 
     if (!empty($data['website'] ?? '')) {
-        json_response(['ok' => false, 'message' => 'Não foi possível processar o envio.'], 400);
+        qcs_api_json_response(array('ok' => false, 'message' => 'Não foi possível processar o envio.'), 400);
     }
 
     $name = clean_string($data['name'] ?? '', 150);
     $whatsapp = clean_string($data['whatsapp'] ?? '', 30);
-    [$whatsappE164, $validWhatsapp] = normalize_whatsapp_br($whatsapp);
+    list($whatsappE164, $validWhatsapp) = normalize_whatsapp_br($whatsapp);
     $city = clean_string($data['city'] ?? '', 120);
     $state = normalize_state($data['state'] ?? 'GO');
     $propertyType = normalize_property_type((string)($data['property_type'] ?? 'default'));
@@ -32,28 +39,28 @@ try {
     $consent = filter_var($data['consent'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
     if (!$name || !$whatsapp || !$city || !$state || !$propertyType || $monthlyBill <= 0 || !$ownership || !$roofType || !$timeline) {
-        json_response(['ok' => false, 'message' => 'Preencha todos os campos obrigatórios.'], 422);
+        qcs_api_json_response(array('ok' => false, 'message' => 'Preencha todos os campos obrigatórios.'), 422);
     }
     if (!$validWhatsapp) {
-        json_response(['ok' => false, 'message' => 'Informe um WhatsApp brasileiro válido com DDD.'], 422);
+        qcs_api_json_response(array('ok' => false, 'message' => 'Informe um WhatsApp brasileiro válido com DDD.'), 422);
     }
     if (!$consent) {
-        json_response(['ok' => false, 'message' => 'É necessário aceitar o contato de empresas parceiras para receber orçamentos.'], 422);
+        qcs_api_json_response(array('ok' => false, 'message' => 'É necessário aceitar o contato de empresas parceiras para receber orçamentos.'), 422);
     }
 
     $settings = get_simulator_settings($pdo, $state);
-    $estimate = calculate_solar_estimate([
+    $estimate = calculate_solar_estimate(array(
         'monthly_bill' => $monthlyBill,
         'property_type' => $propertyType,
-    ], $settings);
+    ), $settings);
 
-    $score = calculate_lead_score([
+    $score = calculate_lead_score(array(
         'monthly_bill' => $monthlyBill,
         'property_ownership' => $ownership,
         'installation_timeline' => $timeline,
         'property_type' => $propertyType,
         'roof_type' => $roofType,
-    ], $validWhatsapp);
+    ), $validWhatsapp);
     $classification = classify_score($score);
     $leadId = generate_lead_id();
 
@@ -70,7 +77,7 @@ try {
         :score, :classification, :status, :source, :utm_source, :utm_campaign, :utm_medium, :utm_content, :utm_term,
         :ip_hash, :user_agent
     )');
-    $stmt->execute([
+    $stmt->execute(array(
         ':lead_id' => $leadId,
         ':name' => $name,
         ':whatsapp' => $whatsapp,
@@ -101,7 +108,7 @@ try {
         ':utm_term' => clean_string($data['utm_term'] ?? '', 120),
         ':ip_hash' => ip_hash(),
         ':user_agent' => clean_string($_SERVER['HTTP_USER_AGENT'] ?? '', 500),
-    ]);
+    ));
 
     $message = "Olá, fiz uma simulação no Quanto Custa Solar.\n\n" .
         "Meu nome: {$name}\n" .
@@ -112,7 +119,7 @@ try {
         "Investimento aproximado: " . br_money($estimate['investment_min']) . " a " . br_money($estimate['investment_max']) . "\n\n" .
         "Gostaria de receber um orçamento real.";
 
-    json_response([
+    qcs_api_json_response(array(
         'ok' => true,
         'message' => 'Simulação enviada com sucesso.',
         'lead_id' => $leadId,
@@ -120,8 +127,8 @@ try {
         'score' => $score,
         'result' => $estimate,
         'whatsapp_url' => whatsapp_link(defined('DEFAULT_WHATSAPP_E164') ? DEFAULT_WHATSAPP_E164 : $whatsappE164, $message),
-    ]);
+    ));
 } catch (Throwable $e) {
     error_log('[QCS leads.php] ' . $e->getMessage());
-    json_response(['ok' => false, 'message' => 'Erro ao processar sua simulação. Confira a configuração do banco de dados e o arquivo /api/health.php.'], 500);
+    qcs_api_json_response(array('ok' => false, 'message' => 'Erro ao processar sua simulação. Confira /api/health.php, config/config.php e o schema do banco.'), 500);
 }
