@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /config/
+Disallow: /includes/
+Disallow: /database/
+Disallow: /tools/
+Disallow: /admin/
+
+Sitemap: https://quantocustasolar.com.br/sitemap.xml
