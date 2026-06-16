@@ -47,6 +47,10 @@ function br_number(float $value, int $decimals = 1): string {
     return number_format($value, $decimals, ',', '.');
 }
 
+function qcs_contains(string $haystack, string $needle): bool {
+    return $needle === '' || strpos($haystack, $needle) !== false;
+}
+
 function normalize_state($state): string {
     $state = strtoupper(clean_string($state, 2));
     return preg_match('/^[A-Z]{2}$/', $state) ? $state : 'GO';
@@ -164,13 +168,23 @@ function calculate_solar_estimate(array $input, array $settings): array {
         $estimatedKwp = 1.5;
     }
 
-    $prefix = match ($type) {
-        'residential' => 'residential',
-        'commercial' => 'commercial',
-        'rural' => 'rural',
-        'industrial' => 'industrial',
-        default => 'default'
-    };
+    switch ($type) {
+        case 'residential':
+            $prefix = 'residential';
+            break;
+        case 'commercial':
+            $prefix = 'commercial';
+            break;
+        case 'rural':
+            $prefix = 'rural';
+            break;
+        case 'industrial':
+            $prefix = 'industrial';
+            break;
+        default:
+            $prefix = 'default';
+            break;
+    }
 
     $minPrice = (float)($settings[$prefix . '_kwp_min_price'] ?? $settings['default_kwp_min_price'] ?? 3800);
     $maxPrice = (float)($settings[$prefix . '_kwp_max_price'] ?? $settings['default_kwp_max_price'] ?? 5500);
@@ -207,14 +221,14 @@ function calculate_lead_score(array $data, bool $validWhatsapp): int {
     if ($bill > 1000) $score += 25;
     elseif ($bill >= 600) $score += 15;
 
-    if (str_contains($ownership, 'proprio') || str_contains($ownership, 'próprio') || $ownership === 'sim') $score += 20;
+    if (qcs_contains($ownership, 'proprio') || qcs_contains($ownership, 'próprio') || $ownership === 'sim') $score += 20;
 
-    if (str_contains($timeline, 'imediatamente') || str_contains($timeline, '30')) $score += 20;
-    elseif (str_contains($timeline, '90')) $score += 10;
+    if (qcs_contains($timeline, 'imediatamente') || qcs_contains($timeline, '30')) $score += 20;
+    elseif (qcs_contains($timeline, '90')) $score += 10;
 
     if (in_array($property, ['commercial', 'rural', 'industrial'], true)) $score += 15;
     if ($validWhatsapp) $score += 10;
-    if ($roof && !str_contains($roof, 'nao') && !str_contains($roof, 'não')) $score += 5;
+    if ($roof && !qcs_contains($roof, 'nao') && !qcs_contains($roof, 'não')) $score += 5;
 
     return min(100, max(0, $score));
 }
