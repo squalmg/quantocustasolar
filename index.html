@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quanto Custa Solar | Simule o custo da energia solar</title>
+  <meta name="description" content="Simule gratuitamente quanto pode custar instalar energia solar na sua casa, comércio, fazenda ou indústria. Veja investimento, economia e payback aproximados.">
+  <meta name="theme-color" content="#0B1F33">
+  <link rel="icon" href="/assets/img/icone.png">
+  <link rel="preload" href="/assets/img/logo.png" as="image">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="/" aria-label="Quanto Custa Solar">
+        <img src="/assets/img/logo.png" alt="Quanto Custa Solar - Simule antes de investir">
+      </a>
+      <button class="mobile-toggle" type="button" aria-label="Abrir menu">☰</button>
+      <nav class="nav-links" aria-label="Menu principal">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#vantagens">Vantagens</a>
+        <a href="#faq">Dúvidas</a>
+        <a href="/parceiros.html">Para empresas solares</a>
+        <a class="btn btn-primary" href="#simulador">Simular agora</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Simulador gratuito de energia solar</div>
+          <h1>Quanto custa colocar energia solar no seu imóvel?</h1>
+          <p>Simule gratuitamente o investimento aproximado, a economia mensal e o prazo de retorno para instalar energia solar na sua casa, empresa ou fazenda.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#simulador">Simular meu custo agora →</a>
+            <a class="btn btn-light" href="#como-funciona">Entender como funciona</a>
+          </div>
+          <div class="trust-row" aria-label="Benefícios da simulação">
+            <span>✓ Simulação gratuita</span>
+            <span>✓ Estimativa em menos de 1 minuto</span>
+            <span>✓ Casa, empresa e fazenda</span>
+          </div>
+        </div>
+
+        <aside id="simulador" class="simulator-card" aria-label="Simulador de custo de energia solar">
+          <div class="card-top">
+            <div>
+              <h2>Comece sua simulação</h2>
+              <p>Preencha os dados principais para receber uma faixa inicial de investimento.</p>
+            </div>
+            <span class="badge">● Online</span>
+          </div>
+
+          <form data-simulator-form novalidate>
+            <div class="honeypot" aria-hidden="true">
+              <label>Não preencha</label>
+              <input type="text" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="name">Nome</label>
+                <input id="name" name="name" type="text" placeholder="Seu nome" required>
+              </div>
+              <div class="form-field">
+                <label for="whatsapp">WhatsApp</label>
+                <input id="whatsapp" name="whatsapp" type="tel" placeholder="(64) 99999-9999" required>
+              </div>
+              <div class="form-field">
+                <label for="city">Cidade</label>
+                <input id="city" name="city" type="text" placeholder="Rio Verde" required>
+              </div>
+              <div class="form-field">
+                <label for="state">Estado</label>
+                <select id="state" name="state" required>
+                  <option value="GO">GO</option><option value="MT">MT</option><option value="MS">MS</option><option value="MG">MG</option><option value="SP">SP</option>
+                  <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="MA">MA</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SE">SE</option><option value="TO">TO</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="property_type">Tipo de imóvel</label>
+                <select id="property_type" name="property_type" required>
+                  <option value="">Selecione</option>
+                  <option value="residential">Casa / residencial</option>
+                  <option value="commercial">Comércio / empresa</option>
+                  <option value="rural">Fazenda / rural</option>
+                  <option value="industrial">Indústria</option>
+                  <option value="commercial">Condomínio</option>
+                  <option value="default">Outro</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="monthly_bill">Conta média de luz</label>
+                <input id="monthly_bill" name="monthly_bill" type="number" min="1" step="0.01" placeholder="Ex.: 850" required>
+              </div>
+              <div class="form-field">
+                <label for="property_ownership">O imóvel é próprio?</label>
+                <select id="property_ownership" name="property_ownership" required>
+                  <option value="">Selecione</option>
+                  <option value="proprio">Sim, é próprio</option>
+                  <option value="alugado">Alugado</option>
+                  <option value="financiado">Financiado</option>
+                  <option value="nao_sei">Não sei</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="roof_type">Tipo de telhado/instalação</label>
+                <select id="roof_type" name="roof_type" required>
+                  <option value="">Selecione</option>
+                  <option value="ceramico">Telhado cerâmico</option>
+                  <option value="metalico">Telhado metálico</option>
+                  <option value="laje">Laje</option>
+                  <option value="solo">Instalação no solo</option>
+                  <option value="nao_sei">Não sei</option>
+                </select>
+              </div>
+              <div class="form-field full">
+                <label for="installation_timeline">Quando pretende instalar?</label>
+                <select id="installation_timeline" name="installation_timeline" required>
+                  <option value="">Selecione</option>
+                  <option value="imediatamente">Imediatamente</option>
+                  <option value="ate_30_dias">Em até 30 dias</option>
+                  <option value="ate_90_dias">Em até 90 dias</option>
+                  <option value="pesquisando">Só estou pesquisando</option>
+                </select>
+              </div>
+              <div class="form-field full">
+                <label class="consent">
+                  <input type="checkbox" name="consent" required>
+                  <span>Concordo em receber contato do Quanto Custa Solar e de empresas parceiras para orçamento de energia solar. Li a <a href="/politica-de-privacidade.html" target="_blank">Política de Privacidade</a>.</span>
+                </label>
+              </div>
+              <div class="form-field full">
+                <button class="btn btn-primary btn-block" type="submit">Simular meu custo agora</button>
+              </div>
+            </div>
+            <div class="form-message" data-form-message></div>
+          </form>
+
+          <div class="result-box" data-result-box>
+            <div class="badge" data-classification>Resultado gerado</div>
+            <div class="result-grid">
+              <div class="result-card"><small>Sistema estimado</small><strong data-kwp>--</strong></div>
+              <div class="result-card"><small>Investimento aproximado</small><strong data-investment>--</strong></div>
+              <div class="result-card"><small>Economia mensal estimada</small><strong data-savings>--</strong></div>
+              <div class="result-card"><small>Payback aproximado</small><strong data-payback>--</strong></div>
+            </div>
+            <p class="small">Esta é uma estimativa inicial. O orçamento final depende de avaliação técnica, concessionária, estrutura elétrica, telhado, sombreamento, padrão de entrada e regras de compensação de energia.</p>
+            <div class="result-actions">
+              <a class="btn btn-primary" data-whatsapp-url href="#" target="_blank" rel="noopener">Receber orçamento real →</a>
+              <a class="btn btn-outline" href="#simulador">Refazer simulação</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="section white">
+      <div class="container">
+        <div class="section-head">
+          <h2>Como funciona</h2>
+          <p>O processo foi pensado para você entender a viabilidade antes de conversar com vendedores ou solicitar uma visita técnica.</p>
+        </div>
+        <div class="steps">
+          <div class="step"><div class="step-number">1</div><h3>Informe sua conta</h3><p>Usamos o valor médio da conta de luz para estimar o consumo mensal em kWh.</p></div>
+          <div class="step"><div class="step-number">2</div><h3>Calculamos o sistema</h3><p>Estimamos a potência em kWp conforme o estado, tipo de imóvel e parâmetros de geração.</p></div>
+          <div class="step"><div class="step-number">3</div><h3>Mostramos a faixa</h3><p>Você recebe investimento, economia e retorno aproximados em formato de faixa.</p></div>
+          <div class="step"><div class="step-number">4</div><h3>Receba propostas</h3><p>Empresas parceiras da região podem entrar em contato para orçamento técnico real.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vantagens" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Por que simular antes de investir?</h2>
+          <p>Energia solar é uma decisão financeira. O primeiro passo é saber se o investimento faz sentido para o seu consumo.</p>
+        </div>
+        <div class="cards">
+          <article class="info-card"><div class="icon-bubble">☀</div><h3>Clareza no investimento</h3><p>Você vê uma faixa inicial de custo e evita começar a conversa sem referência de valor.</p></article>
+          <article class="info-card"><div class="icon-bubble">↘</div><h3>Economia estimada</h3><p>Entenda quanto pode reduzir mensalmente e em quantos anos o sistema pode se pagar.</p></article>
+          <article class="info-card"><div class="icon-bubble">⌂</div><h3>Casa, comércio e fazenda</h3><p>O simulador separa perfis residenciais, comerciais, rurais e industriais.</p></article>
+          <article class="info-card"><div class="icon-bubble">✓</div><h3>Sem promessa exagerada</h3><p>O resultado é estimativo e conservador. O orçamento final depende de avaliação técnica.</p></article>
+          <article class="info-card"><div class="icon-bubble">⚙</div><h3>Parâmetros editáveis</h3><p>A base de tarifa, geração, economia e custo por kWp pode ser ajustada por estado.</p></article>
+          <article class="info-card"><div class="icon-bubble">📍</div><h3>Empresas da região</h3><p>Você pode receber contato de instaladores que atendem sua cidade ou estado.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="container">
+        <div class="cta-band">
+          <div>
+            <h2>Quer saber se energia solar compensa para você?</h2>
+            <p>Faça a simulação agora e receba uma estimativa inicial para decidir com mais segurança.</p>
+          </div>
+          <a class="btn btn-primary" href="#simulador">Simular agora →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Dúvidas frequentes</h2>
+          <p>Antes de solicitar orçamento, entenda os pontos principais da simulação.</p>
+        </div>
+        <div class="faq">
+          <details open><summary>A simulação é um orçamento definitivo?</summary><p>Não. O resultado é uma estimativa inicial. Um orçamento definitivo depende de análise técnica do imóvel, telhado, estrutura elétrica, concessionária, sombreamento e regras de compensação.</p></details>
+          <details><summary>O site vende energia solar diretamente?</summary><p>Não. O Quanto Custa Solar é uma ferramenta de simulação e captação de orçamento. Quando você solicita contato, empresas parceiras podem apresentar propostas comerciais.</p></details>
+          <details><summary>Por que o resultado aparece em faixa?</summary><p>Porque o preço real varia conforme tamanho do sistema, marcas utilizadas, tipo de instalação, distância, homologação, estrutura e condições comerciais da empresa instaladora.</p></details>
+          <details><summary>Consigo simular para fazenda ou empresa?</summary><p>Sim. A ferramenta aceita casa, comércio, fazenda, indústria, condomínio e outros tipos de imóvel.</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <img class="footer-logo" src="/assets/img/logo.png" alt="Quanto Custa Solar">
+        <p>Simule antes de investir. Estimativas claras para decisões melhores em energia solar.</p>
+      </div>
+      <nav class="footer-links">
+        <a href="/parceiros.html">Parceiros</a>
+        <a href="/politica-de-privacidade.html">Privacidade</a>
+        <a href="/termos-de-uso.html">Termos</a>
+        <a href="/admin/login.php">Admin</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/simulator.js" defer></script>
+</body>
+</html>
