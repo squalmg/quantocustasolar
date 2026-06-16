@@ -47,6 +47,22 @@
     resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  async function parseJsonResponse(res) {
+    const contentType = (res.headers.get('content-type') || '').toLowerCase();
+
+    if (!contentType.includes('application/json')) {
+      const text = await res.text().catch(() => '');
+      const hint = text && text.trim().startsWith('<') ? 'O PHP retornou HTML/erro do servidor em vez de JSON.' : 'Resposta inválida do servidor.';
+      throw new Error(`${hint} Código HTTP: ${res.status}.`);
+    }
+
+    const json = await res.json();
+    if (!res.ok) {
+      throw new Error(json.message || `Erro HTTP ${res.status} ao enviar a simulação.`);
+    }
+    return json;
+  }
+
   function validate(payload) {
     if (!payload.name || !payload.whatsapp || !payload.city || !payload.state || !payload.property_type || !payload.monthly_bill || !payload.property_ownership || !payload.roof_type || !payload.installation_timeline) {
       return 'Preencha todos os campos obrigatórios.';
@@ -72,7 +88,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      const json = await res.json();
+      const json = await parseJsonResponse(res);
       if (!json.ok) {
         setMessage('error', json.message || 'Não foi possível enviar sua simulação.');
         return;
@@ -80,7 +96,8 @@
       setMessage('ok', json.message || 'Simulação enviada com sucesso.');
       showResult(json.result, json.classification, json.whatsapp_url);
     } catch (e) {
-      setMessage('error', 'Não foi possível enviar. Verifique a configuração do domínio, PHP e banco de dados.');
+      console.error('[QCS] Falha no envio da simulação:', e);
+      setMessage('error', e.message || 'Não foi possível enviar. Verifique a configuração do domínio, PHP e banco de dados.');
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Simular meu custo agora';
